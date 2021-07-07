@@ -4,7 +4,7 @@ const User = require('../models/users.js');
 var multer = require('multer')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
-const { upload, uploadPhoto } = require('../helpers/upload.js')
+const { upload, uploadPhoto } = require('../helpers/upload-user.js')
 //get all user
 const userRouter = express.Router();
 userRouter.get('/all-user', (req, res, next) => {

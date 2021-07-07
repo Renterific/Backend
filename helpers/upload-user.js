@@ -1,11 +1,11 @@
 var multer  = require('multer')
-const mongoose = require('../helpers/db_connection.js')
+const mongoose = require('./db_connection.js')
 const User = require('../models/users.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const multerConfig = multer.diskStorage({
     destination: (req, file, callback) => {
-      callback(null, 'public/images');
+      callback(null, 'public/images/users');
     },
     filename: (req, file, callback) => {
         console.log(file)

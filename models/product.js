@@ -12,9 +12,6 @@ const Product = mongoose.model('Product', {
     price_by_day: {
         type: Number
     },
-    category_no: {
-        type: Number
-    },
     status_adminstaration: {
         type: String,
         enum: ["pending", "accepted", "rejected"],
