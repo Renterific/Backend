@@ -19,7 +19,7 @@ app.use('/frontend', express.static('frontend'))
 app.use('/api/user',user_Router)
 app.use('/api/product',product_Router)
 app.use('/api/category',category_Router)
-// app.use('/api/renting-operation',renting_operation_Router)
+app.use('/api/renting-operation',renting_operation_Router)
 
 //error message
 app.use((err,req,res,next)=>{

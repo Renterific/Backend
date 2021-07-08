@@ -4,7 +4,7 @@ const RentingOperation = mongoose.model('RentingOperation', {
         type: Number
     },
     total_days: {
-        type: String
+        type: Number
     },
     start_date: {
         type: Date
