@@ -1,7 +1,7 @@
 const express = require('express');
 const Product = require('../models/product.js');
 const { upload, uploadPhoto } = require('../helpers/upload-product.js')
-//get all user
+//get all users
 const productRouter = express.Router();
 productRouter.get('/all-product', (req, res, next) => {
     Product.find({}).then((data) => {
@@ -10,7 +10,7 @@ productRouter.get('/all-product', (req, res, next) => {
         return next(new Error(err))
     })
 })
-//add user
+//add one user
 productRouter.post('/add-product', uploadPhoto, upload);
 //update user record by id
 productRouter.put('/update-product/:id', (req, res, next) => {
