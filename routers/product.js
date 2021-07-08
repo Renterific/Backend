@@ -5,7 +5,7 @@ const Category = require('../models/category.js');
 const User = require('../models/users.js');
 var multer = require('multer')
 const { upload, uploadPhoto } = require('../helpers/upload-product.js')
-//get all user
+//get all users
 const productRouter = express.Router();
 productRouter.get('/all-product', (req, res, next) => {
     Product.find({}).then((data) => {
