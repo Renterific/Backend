@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-// hello
-=======
 const mongoose = require('../helpers/db_connection.js')
 const express = require('express');
 const Product = require('../models/product.js');
@@ -18,12 +15,12 @@ productRouter.get('/all-product', (req, res, next) => {
     })
 })
 //add user
- productRouter.post('/add-product', uploadPhoto, upload);
+productRouter.post('/add-product', uploadPhoto, upload);
 //update user record by id
 productRouter.put('/update-product/:id', (req, res, next) => {
     let dataInserted = req.body;
     let id = req.params.id;
-    User.findByIdAndUpdate(id, dataInserted).then(() => {
+    Product.findByIdAndUpdate(id, dataInserted).then(() => {
         res.status(200).json({ 'success': "data is Updated" })
     }).catch((err) => {
         return next(new Error(err))
@@ -32,68 +29,117 @@ productRouter.put('/update-product/:id', (req, res, next) => {
 //delete user by id
 productRouter.delete('/delete-product/:id', (req, res, next) => {
     let id = req.params.id
-    User.findByIdAndDelete(id).then(() => {
+    Product.findByIdAndDelete(id).then(() => {
         res.status(200).json({ 'success': "data is deleted" })
     }).catch((err) => {
         return next(new Error(err))
     })
-}) 
-//get product by cat_name
-//get product by user_name
-
-productRouter.get('/get-category-from-productcollection/', async(req, res, next) => {
+})
+productRouter.get('/get-category-from-productcollection/', async (req, res, next) => {
     const product = await Product.aggregate([
         {
-          $lookup: {
-            from: 'categories',
-            localField: 'category',
-            foreignField: '_id',
-            as: 'categoryData'
-          }
+            $lookup: {
+                from: 'categories',
+                localField: 'category',
+                foreignField: '_id',
+                as: 'categoryData'
+            }
         }
-      ]).exec((err, result)=>{
+    ]).exec((err, result) => {
         if (err) {
             return next(new Error(err))
         }
         if (result) {
             res.status(200).json(result)
         }
-  });
-    // const all_product = await Product.find({});
-    // const data_array = [];
-    // all_product.map((item)=>{
-    //     const cat_id = item.category;
-    //     Category.findOne({_id:cat_id}).then((cat_details)=>{
-    //         data_array.push(cat_details);
-    //     }).catch((err) => {
-    //         return next(new Error(err))
-    //     })
-    // })
-    
-}) 
-
-productRouter.get('/get-user-from-productcollection/', async(req, res, next) => {
+    });
+})
+productRouter.get('/get-user-from-productcollection/', async (req, res, next) => {
     const product = await Product.aggregate([
         {
-          $lookup: {
-            from: 'users',
-            localField: 'user',
-            foreignField: '_id',
-            as: 'userData'
-          }
+            $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'userData'
+            }
         }
-      ]).exec((err, result)=>{
+    ]).exec((err, result) => {
         if (err) {
             return next(new Error(err))
         }
         if (result) {
             res.status(200).json(result)
         }
-  });
-}) 
-
-
-
-
+    });
+})
+productRouter.get('/search-by-category-title/:title', async (req, res, next) => {
+    const title = req.params.title;
+    const product = await Product.aggregate([
+        {
+            $lookup: {
+                from: 'categories',
+                localField: 'category',
+                foreignField: '_id',
+                as: 'categoryData'
+            }
+        }
+    ]).exec((err, result) => {
+        if (err) {
+            return next(new Error(err))
+        }
+        if (result) {
+            const arry_cat = [];
+            const data =   result.map((item)=>{
+               const cat_title = item.categoryData[0].title;
+                if(cat_title==title){
+                    arry_cat.push(item)
+                }else{
+                    if (err) {
+                        return next(new Error(err))
+                    } 
+                }
+            })
+            res.status(200).json(arry_cat)
+            res.end();
+        }
+    });
+})
+productRouter.get('/search-by-user-email/:email', async (req, res, next) => {
+    const Email = req.params.email;
+    const product = await Product.aggregate([
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'userData'
+            }
+        }
+    ]).exec((err, result) => {
+        if (err) {
+            return next(new Error(err))
+        }
+        if (result) {
+            const arry_user = [];
+            const data =   result.map((item)=>{
+               const Email_user = item.userData[0].Email;
+                if(Email_user==Email){
+                    arry_user.push(item)
+                }else{
+                    if (err) {
+                        return next(new Error(err))
+                    } 
+                }
+            })
+            res.status(200).json(arry_user)
+            res.end();
+        }
+    });
+})
 module.exports = productRouter;
->>>>>>> Stashed changes
+
+
+
+
+ 
