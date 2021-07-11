@@ -13,7 +13,6 @@ const multerConfig = multer.diskStorage({
     callback(null, file.originalname);
   },
 });
-
 const onlyImage = (req, file, callback) => {
   if (file.mimetype.startsWith('image')) {
     callback(null, true);
@@ -21,7 +20,6 @@ const onlyImage = (req, file, callback) => {
     callback(new Error('Only Jpeg Allowed'));
   }
 };
-
 const upload = multer({
   storage: multerConfig,
   fileFilter: onlyImage,

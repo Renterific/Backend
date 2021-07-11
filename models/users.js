@@ -22,6 +22,10 @@ const User = mongoose.model('User', {
         city: String,
         lang: String,
         lat: String
+    },
+    Role_name:{
+        type:String,
+        default: 'user'
     }
 })
 

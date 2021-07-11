@@ -1,7 +1,7 @@
 const express = require('express');
 const Product = require('../models/product.js');
 const { upload, uploadPhoto } = require('../helpers/upload-product.js')
-//get all users
+//get all user
 const productRouter = express.Router();
 productRouter.get('/all-product', (req, res, next) => {
     Product.find({}).then((data) => {
@@ -10,7 +10,7 @@ productRouter.get('/all-product', (req, res, next) => {
         return next(new Error(err))
     })
 })
-//add one user
+//add user
 productRouter.post('/add-product', uploadPhoto, upload);
 //update user record by id
 productRouter.put('/update-product/:id', (req, res, next) => {
@@ -31,6 +31,7 @@ productRouter.delete('/delete-product/:id', (req, res, next) => {
         return next(new Error(err))
     })
 })
+
 productRouter.get('/get-category-from-productcollection/', async (req, res, next) => {
     const product = await Product.aggregate([
         {
