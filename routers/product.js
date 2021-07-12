@@ -134,6 +134,17 @@ productRouter.get('/search-by-user-email/:email', async (req, res, next) => {
         }
     });
 })
+
+productRouter.get('/get-product/:id', (req, res, next) => {
+    let id = req.params.id
+    Product.findById(id).then((result) => {
+        res.status(200).json(result)
+    }).catch((err) => {
+        return next(new Error(err))
+    })
+})
+
+
 module.exports = productRouter;
 
 

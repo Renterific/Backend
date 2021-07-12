@@ -39,8 +39,6 @@ exports.upload = async (req, res, next) => {
       image: req.body.image,
       desc: req.body.desc,
       price_by_day: parseInt(req.body.price_by_day),
-      status_adminstaration: req.body.status_adminstaration,
-      status: req.body.status,
       category:cat._id,
       user:user._id
     }
