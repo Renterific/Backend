@@ -42,7 +42,7 @@ userRouter.post('/login', (req, res, next) => {
             console.log(result)
             if (result == true) {
                 const token = jwt.sign({ "id": user._id }, "baselkey")
-                res.status(200).json({ "message": 'success', "token": token,"role_name":user.Role_name })
+                res.status(200).json({ "message": 'success', "token": token,"role_name":user.Role_name ,"data":user})
             } else {
                 res.status(200).json({ "message": 'failed' })
             }
