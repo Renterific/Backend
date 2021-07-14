@@ -4,6 +4,7 @@ const User = require('../models/users.js');
 var multer = require('multer')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const { upload, uploadPhoto } = require('../helpers/upload-user.js')
 //get all user
 const userRouter = express.Router();
@@ -15,7 +16,23 @@ userRouter.get('/all-user', (req, res, next) => {
     })
 })
 //add user
-userRouter.post('/add-user', uploadPhoto, upload);
+userRouter.post('/add-user', (req,res,next)=>{
+    console.log(req.body);
+    bcrypt.genSalt(saltRounds, (err, salt) =>{
+        bcrypt.hash(req.body.Password, salt,(err, hash) =>{
+            if(err){
+                next(new Error('error in encryption password'))
+            }
+            req.body.Password = hash
+            new User(req.body).save().then(()=>{
+                console.log('data is registered')
+                res.status(200).json({"status":'data is registered'})
+            }).catch((err)=>{
+                next(new Error('DATA NOT SAVED'))
+            })
+        });
+    });
+});
 //update user record by id
 userRouter.put('/update-user/:id', (req, res, next) => {
     let dataInserted = req.body;
@@ -37,7 +54,6 @@ userRouter.delete('/delete-user/:id', (req, res, next) => {
 }) 
 userRouter.post('/login', (req, res, next) => {
     User.findOne({ Email: req.body.Email }).then((user) => {
-        //console.log(req.body.Password,user.Password)
         const resultCompare = bcrypt.compare(req.body.Password, user.Password).then((result) => {
             console.log(result)
             if (result == true) {

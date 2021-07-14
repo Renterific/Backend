@@ -3,9 +3,6 @@ const User = mongoose.model('User', {
     Name: {
         type: String
     },
-    image: {
-        type: String
-    },
     Phone: {
         type: Number
     },
@@ -17,11 +14,11 @@ const User = mongoose.model('User', {
     Password: {
         type: String
     },
-    Address: {
-        street: String,
-        city: String,
-        lang: String,
-        lat: String
+    Address_street: {
+        type:String
+    },
+    Address_city: {
+        type:String
     },
     Role_name:{
         type:String,
