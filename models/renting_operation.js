@@ -9,21 +9,22 @@ const RentingOperation = mongoose.model('RentingOperation', {
     start_date: {
         type: Date
     },
-    end_date: {
-        type: Date
+    position_receipt:{
+        type:String
     },
     status_operation: {
         type: String,
         enum: ["requested", "shipping", "closed"],
         default: "requested"
     },
-    user: {
-        type: mongoose.ObjectId,
-        ref: 'User'
+    seller:{
+        type: mongoose.ObjectId
+    },
+    buyer:{
+        type: mongoose.ObjectId
     },
     product: {
-        type: mongoose.ObjectId,
-        ref: 'Product'
+        type: mongoose.ObjectId
     }
 })
 
