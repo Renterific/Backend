@@ -102,8 +102,8 @@ productRouter.get('/search-by-category-title/:title', async (req, res, next) => 
         }
     });
 })
-productRouter.get('/search-by-user-email/:email', async (req, res, next) => {
-    const Email = req.params.email;
+productRouter.get('/search-by-user-id/:id', async (req, res, next) => {
+    const Email = req.params.id;
     const product = await Product.aggregate([
         {
             $lookup: {
@@ -122,7 +122,7 @@ productRouter.get('/search-by-user-email/:email', async (req, res, next) => {
             const arry_user = [];
             const data =   result.map((item)=>{
                 if(item.userData[0]==true){}
-               const Email_user = item.userData[0].Email;
+               const Email_user = item.userData[0]._id;
                 if(true){
                     arry_user.push(item)
                 }else{
