@@ -118,10 +118,12 @@ productRouter.get('/search-by-user-email/:email', async (req, res, next) => {
             return next(new Error(err))
         }
         if (result) {
+            console.log(result)
             const arry_user = [];
             const data =   result.map((item)=>{
+                if(item.userData[0]==true){}
                const Email_user = item.userData[0].Email;
-                if(Email_user==Email){
+                if(true){
                     arry_user.push(item)
                 }else{
                     if (err) {
