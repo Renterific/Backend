@@ -69,4 +69,13 @@ userRouter.post('/login', (req, res, next) => {
     })
 });
 
+userRouter.get('/get-user/:id', (req, res, next) => {
+    let id = req.params.id;
+    User.findOne({_id:id}).then(data => {
+        res.status(200).json(data)
+    }).catch((err) => {
+        return next(new Error(err))
+    })
+})
+
 module.exports = userRouter;
