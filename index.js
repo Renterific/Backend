@@ -4,11 +4,15 @@ const cors = require("cors"); //to aviod CROS
 const nodemailer = require("nodemailer");
 const app = express();
 const port = process.env.PORT || "3333";
-
+//payment
+var Secret_Key = 'sk_test_51JEgToCAlmE8w7N11DCcDSmxEBqQokJjTnnkg9dV2f6RCoJXsFJo06Uhf4KH8iCyzXh8jggFbnKGXqp0ueeYoLRY00us8VPnDz'
+const stripe = require('stripe')(Secret_Key) 
+//
 const user_Router = require("./routers/user.js");
 const product_Router = require("./routers/product.js");
 const category_Router = require("./routers/category.js");
 const renting_operation_Router = require("./routers/renting_operation.js");
+
 
 app.use(express.json());
 app.use(cors());
@@ -43,7 +47,6 @@ app.post("/sendMail", (req, res, next) => {
     <br> 
     <p>Your new password is <span style="color:blue"> ${user.password}</span>. Please do not share it with others</p>`,
   };
-
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
@@ -64,3 +67,46 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+// card: {
+//   number: '4242424242424242',
+//   exp_month: 2,
+//   exp_year: 2024,
+//   cvc: '1111',
+// },
+app.post('/payment', async(req, res)=>{ 
+  
+	const token = await stripe.tokens.create({
+		card: {
+		  number: req.body.c_number,
+		  exp_month: req.body.exp_number ,
+		  exp_year:  req.body.exp_year,
+		  cvc:  req.body.cvc,
+		},
+	  });
+	stripe.customers.create({ 
+		email: req.body.email, 
+		source: token.id, 
+		name: 'Basel Osama', 
+		address: { 
+			line1: 'Menofia', 
+			postal_code: '32849', 
+			city: 'menof', 
+			state: 'Cairo', 
+			country: 'Egypt', 
+		} 
+	}) 
+	.then((customer) => { 
+		return stripe.charges.create({ 
+			amount: req.body.price,
+			description: 'test', 
+			currency: 'USD', 
+			customer: customer.id 
+		}); 
+	}) 
+	.then((charge) => { 
+		res.status(200).json({'status':"success"}) // If no error occurs 
+	}) 
+	.catch((err) => { 
+		res.status(400).json({'status':"failed"}) 	 // If some error occurs 
+	}); 
+}) 
